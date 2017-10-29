@@ -12,9 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.bepa.worktogether.adapter.TaskAdapter;
+import com.bepa.worktogether.model.Task;
+
+import java.util.ArrayList;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    TaskAdapter adapter;
+    ArrayList<Task> tasks = new ArrayList<Task>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +32,6 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,6 +41,35 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final ListView lvMain = (ListView) findViewById(R.id.lvMain);
+
+        tasks.add(new Task("1", "Task 1", "01", 0));
+        tasks.add(new Task("2", "Task 2", "01", 1));
+        tasks.add(new Task("3", "Task 3", "01", 2));
+        tasks.add(new Task("4", "Task 4", "02", 2));
+        tasks.add(new Task("5", "Task 5", "02", 0));
+        tasks.add(new Task("6", "Task 6", "03", 1));
+        tasks.add(new Task("7", "Task 7", "03", 0));
+
+        // создаем адаптер
+        adapter = new TaskAdapter(this, android.R.layout.activity_list_item, tasks);
+
+        // присваиваем адаптер списку
+        lvMain.setAdapter(adapter);
+
+        lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Task object = tasks.get(position);
+
+                if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
+
+                adapter = new TaskAdapter(NavigationActivity.this, android.R.layout.activity_list_item, tasks);
+
+                lvMain.setAdapter(adapter);
+            }
+        });
     }
 
     @Override
