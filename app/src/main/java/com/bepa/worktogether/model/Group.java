@@ -1,0 +1,61 @@
+package com.bepa.worktogether.model;
+
+import java.util.ArrayList;
+
+/**
+ * Created by vera on 10/30/17.
+ */
+
+public class Group {
+    private String id;
+    String name;
+    ArrayList<User> people;
+    ArrayList<Task> tasks;
+
+    public Group(String id, String name) {
+        this.id = id;
+        this.name = name;
+        this.people = new ArrayList<User>();
+        this.tasks = new ArrayList<Task>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addUser(User user) {
+        this.people.add(user);
+    }
+
+    public ArrayList<User> getPeople() {
+        return people;
+    }
+
+    public void setPeople(ArrayList<User> people) {
+        this.people = people;
+    }
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
+    }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(ArrayList<Task> tasks) {
+        this.tasks = tasks;
+    }
+}

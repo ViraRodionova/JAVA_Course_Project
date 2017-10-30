@@ -7,22 +7,13 @@ package com.bepa.worktogether.model;
 public class Task {
     private String id;
     String name;
-    String group_id;
+    User assignee;
     int status;
 
-    public Task(String id, String name, String group_id, int status) {
+    public Task(String id, String name, int status) {
         this.id = id;
         this.name = name;
-        this.group_id = group_id;
         this.status = status;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -33,19 +24,19 @@ public class Task {
         this.name = name;
     }
 
+    public User getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+
     public int getStatus() {
         return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public String getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(String group_id) {
-        this.group_id = group_id;
     }
 }
