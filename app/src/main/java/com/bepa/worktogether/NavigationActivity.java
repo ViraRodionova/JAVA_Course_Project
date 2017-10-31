@@ -38,6 +38,8 @@ public class NavigationActivity extends AppCompatActivity
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -62,7 +64,7 @@ public class NavigationActivity extends AppCompatActivity
 
 
         groupAdapter = new ArrayAdapter<String>(NavigationActivity.this,
-                android.R.layout.simple_list_item_1, names);
+                R.layout.custom_spinner_item, names);
         groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(groupAdapter);
