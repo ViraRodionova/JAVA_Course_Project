@@ -43,6 +43,14 @@ public class MockedData {
         user.addGroup(g1);
         user.addGroup(g2);
 
+        user.tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
+                t1, t5, t8
+        }));
+
+        t1.setAssignee(user);
+        t5.setAssignee(user);
+        t8.setAssignee(user);
+
         this.tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
                 t1, t2, t3, t4, t5, t6, t7, t8
         }));
