@@ -1,7 +1,6 @@
 package com.bepa.worktogether.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ public class GroupAdapter extends ArrayAdapter<Group> {
         this.objects = objects;
     }
 
-    public View getView(int position, View convertView, @NonNull ViewGroup parent){
+    public View getView(int position, View convertView, @NonNull final ViewGroup parent){
         View v = convertView;
 
         if (v == null) {
@@ -36,13 +35,13 @@ public class GroupAdapter extends ArrayAdapter<Group> {
             v = inflater.inflate(R.layout.list_item_group_search, null);
         }
 
-        Group i = objects.get(position);
+        final Group i = objects.get(position);
 
         if (i != null) {
 
             TextView gn = (TextView) v.findViewById(R.id.groupName);
             TextView gt = (TextView) v.findViewById(R.id.numOfTasks);
-            Button btn = (Button) v.findViewById(R.id.btnJoinLeave);
+            final Button btn = (Button) v.findViewById(R.id.btnJoinLeave);
 
             if (gn != null){
                 gn.setText(i.getName());
@@ -55,6 +54,23 @@ public class GroupAdapter extends ArrayAdapter<Group> {
                         btn.setText("Join");
                         btn.setBackgroundColor(parent.getResources().getColor(R.color.colorPrimary));
                     }
+
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            if (MockedData.user.hasGroup(i)) {
+                                MockedData.user.removeGroup(i);
+
+                                btn.setText("Join");
+                                btn.setBackgroundColor(parent.getResources().getColor(R.color.colorPrimary));
+                            } else {
+                                MockedData.user.addGroup(i);
+
+                                btn.setText("Leave");
+                                btn.setBackgroundColor(parent.getResources().getColor(R.color.colorAccent));
+                            }
+
+                        }
+                    });
                 }
             }
             if (gt != null){
