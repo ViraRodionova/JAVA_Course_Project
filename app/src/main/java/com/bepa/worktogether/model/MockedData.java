@@ -58,5 +58,9 @@ public class MockedData {
         groups = new ArrayList<>(Arrays.asList(new Group[] {
                 g1, g2
         }));
+
+        for(int i = 3; i < 21; i++) {
+            groups.add(new Group("group" + i, "Group " + i));
+        }
     }
 }

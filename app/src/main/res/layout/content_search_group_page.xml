@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     android:layout_marginTop="56dp">
 
-    <TextView
-        android:id="@+id/search_text"
+    <SearchView
+        android:id="@+id/svGroups"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:text="Search Page" />
+        android:layout_height="wrap_content">
+    </SearchView>
+
+    <ListView
+        android:id="@+id/lvGroupSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

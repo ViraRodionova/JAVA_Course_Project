@@ -28,7 +28,6 @@ public class MainFragment extends Fragment {
     TaskAdapter adapter;
     ArrayAdapter<String> groupAdapter;
     ListView lvMain;
-    final static MockedData data = new MockedData();
     int selectedGroupIndex;
     Toolbar toolbar;
     Spinner spinner;
@@ -55,8 +54,8 @@ public class MainFragment extends Fragment {
         final ArrayList<String> names = new ArrayList<String>();
 
         names.add("My Tasks");
-        for (int i = 0; i < data.user.getGroups().size(); i++) {
-            names.add(data.user.getGroups().get(i).getName());
+        for (int i = 0; i < MockedData.user.getGroups().size(); i++) {
+            names.add(MockedData.user.getGroups().get(i).getName());
         }
 
         selectedGroupIndex = 0;
@@ -93,9 +92,9 @@ public class MainFragment extends Fragment {
     private void setListItems() {
         final ArrayList<Task> tasks;
         if (selectedGroupIndex == 0) {
-            tasks = data.user.getTasks();
+            tasks = MockedData.user.getTasks();
         } else {
-            tasks = data.user.getGroups().get(selectedGroupIndex - 1).getTasks();
+            tasks = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
         }
 
         adapter = new TaskAdapter(getActivity(),
@@ -111,9 +110,9 @@ public class MainFragment extends Fragment {
                 Task object;
 
                 if (selectedGroupIndex == 0) {
-                    object = data.user.getTasks().get(position);
+                    object = MockedData.user.getTasks().get(position);
                 } else {
-                    object = data.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
+                    object = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
                 }
 
                 if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
@@ -121,9 +120,9 @@ public class MainFragment extends Fragment {
                 final ArrayList<Task> tasks1;
 
                 if (selectedGroupIndex == 0) {
-                    tasks1 = data.user.getTasks();
+                    tasks1 = MockedData.user.getTasks();
                 } else {
-                    tasks1 = data.user.getGroups().get(selectedGroupIndex - 1).getTasks();
+                    tasks1 = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
                 }
 
                 adapter = new TaskAdapter(getActivity(),
