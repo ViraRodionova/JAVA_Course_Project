@@ -8,12 +8,12 @@ import java.util.Arrays;
  */
 
 public class MockedData {
-    public User user;
-    public ArrayList<Group> groups;
-    public ArrayList<Task> tasks;
+    public static User user;
+    public static ArrayList<Group> groups;
+//    public static ArrayList<Task> tasks;
 
-    public MockedData() {
-        this.user = new User("user", "bepa.rdnv@gmail.com");
+    static {
+        user = new User("user", "bepa.rdnv@gmail.com");
 
         Group g1 = new Group("group1", "Group 1");
         Group g2 = new Group("group2", "Group 2");
@@ -51,11 +51,11 @@ public class MockedData {
         t5.setAssignee(user);
         t8.setAssignee(user);
 
-        this.tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
-                t1, t2, t3, t4, t5, t6, t7, t8
-        }));
+//        tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
+//                t1, t2, t3, t4, t5, t6, t7, t8
+//        }));
 
-        this.groups = new ArrayList<>(Arrays.asList(new Group[] {
+        groups = new ArrayList<>(Arrays.asList(new Group[] {
                 g1, g2
         }));
     }
