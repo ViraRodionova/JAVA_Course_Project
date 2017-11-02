@@ -7,14 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.bepa.worktogether.R;
+import com.bepa.worktogether.adapter.GroupAdapter;
 import com.bepa.worktogether.model.MockedData;
-
-import java.util.ArrayList;
 
 /**
  * Created by vera on 11/2/17.
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 
 public class SearchGroupFragment extends Fragment {
     Toolbar toolbar;
+    GroupAdapter groupAdapter;
     SearchView searchView;
     ListView listView;
 
@@ -40,14 +39,9 @@ public class SearchGroupFragment extends Fragment {
 
         listView = (ListView) getActivity().findViewById(R.id.lvGroupSearch);
 
-        ArrayList<String> names = new ArrayList<String>();
-
-        for (int i = 0; i < MockedData.groups.size(); i++) {
-            names.add(MockedData.groups.get(i).getName());
-        }
-
-        ArrayAdapter<String> groupAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, names);
+        groupAdapter = new GroupAdapter(getActivity(),
+                android.R.layout.activity_list_item,
+                MockedData.groups);
 
         listView.setAdapter(groupAdapter);
 

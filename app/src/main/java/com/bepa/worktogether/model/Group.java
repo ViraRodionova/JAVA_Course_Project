@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Group {
     private String id;
-    String name;
-    ArrayList<User> people;
-    ArrayList<Task> tasks;
+    private String name;
+    private ArrayList<User> people;
+    private ArrayList<Task> tasks;
 
     public Group(String id, String name) {
         this.id = id;
