@@ -36,9 +36,11 @@ public class User {
 
     public void addGroup(Group group) {
         this.groups.add(group);
+        group.addUser(this);
     }
 
     public void removeGroup(Group group) {
+        group.removeUser(this);
         this.groups.remove(group);
     }
 

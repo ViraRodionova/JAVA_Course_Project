@@ -1,15 +1,18 @@
 package com.bepa.worktogether.pages;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.bepa.worktogether.GroupPageActivity;
 import com.bepa.worktogether.R;
 import com.bepa.worktogether.adapter.GroupAdapter;
 import com.bepa.worktogether.model.MockedData;
@@ -44,6 +47,19 @@ public class SearchGroupFragment extends Fragment {
                 MockedData.groups);
 
         listView.setAdapter(groupAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), GroupPageActivity.class);
+
+                System.out.println(MockedData.groups.get(i).getName());
+
+                intent.putExtra("GROUP_ID", MockedData.groups.get(i).getId());
+
+                startActivity(intent);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

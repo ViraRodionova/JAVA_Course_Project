@@ -1,5 +1,7 @@
 package com.bepa.worktogether.model;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,7 +12,6 @@ import java.util.Arrays;
 public class MockedData {
     public static User user;
     public static ArrayList<Group> groups;
-//    public static ArrayList<Task> tasks;
 
     static {
         user = new User("user", "bepa.rdnv@gmail.com");
@@ -37,9 +38,6 @@ public class MockedData {
         g2.addTask(t7);
         g2.addTask(t8);
 
-        g1.addUser(user);
-        g2.addUser(user);
-
         user.addGroup(g1);
         user.addGroup(g2);
 
@@ -51,10 +49,6 @@ public class MockedData {
         t5.setAssignee(user);
         t8.setAssignee(user);
 
-//        tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
-//                t1, t2, t3, t4, t5, t6, t7, t8
-//        }));
-
         groups = new ArrayList<>(Arrays.asList(new Group[] {
                 g1, g2
         }));
@@ -62,5 +56,15 @@ public class MockedData {
         for(int i = 3; i < 21; i++) {
             groups.add(new Group("group" + i, "Group " + i));
         }
+    }
+
+    @Nullable
+    public static Group getGroupById(String id) {
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).getId().equals(id))
+                return groups.get(i);
+        }
+
+        return null;
     }
 }

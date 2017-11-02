@@ -75,6 +75,5 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         // the view must be returned to our activity
         return v;
-
     }
 }

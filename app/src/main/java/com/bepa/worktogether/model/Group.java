@@ -39,6 +39,8 @@ public class Group {
         this.people.add(user);
     }
 
+    public void removeUser(User user) { this.people.remove(user); }
+
     public ArrayList<User> getPeople() {
         return people;
     }
