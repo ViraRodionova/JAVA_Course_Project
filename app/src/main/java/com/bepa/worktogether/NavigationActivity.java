@@ -1,5 +1,7 @@
 package com.bepa.worktogether;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,8 @@ import android.widget.Spinner;
 import com.bepa.worktogether.adapter.TaskAdapter;
 import com.bepa.worktogether.model.MockedData;
 import com.bepa.worktogether.model.Task;
+import com.bepa.worktogether.pages.MainFragment;
+import com.bepa.worktogether.pages.SearchGroupFragment;
 
 import java.util.ArrayList;
 
@@ -29,14 +33,23 @@ public class NavigationActivity extends AppCompatActivity
     ListView lvMain;
     final static MockedData data = new MockedData();
     int selectedGroupIndex;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         setSupportActionBar(toolbar);
+
+
+        fragmentManager = getFragmentManager();
+
+        MainFragment mainFragment = new MainFragment();
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, mainFragment)
+                .commit();
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -48,39 +61,6 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        lvMain = (ListView) findViewById(R.id.lvMain);
-
-        final ArrayList<String> names = new ArrayList<String>();
-
-        names.add("My Tasks");
-        for (int i = 0; i < data.user.getGroups().size(); i++) {
-            names.add(data.user.getGroups().get(i).getName());
-        }
-
-        selectedGroupIndex = 0;
-
-        setListItems();
-
-
-        groupAdapter = new ArrayAdapter<String>(NavigationActivity.this,
-                R.layout.custom_spinner_item, names);
-        groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(groupAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedGroupIndex = i;
-
-                setListItems();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     @Override
@@ -122,8 +102,17 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            MainFragment mainFragment = new MainFragment();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, mainFragment)
+                    .commit();
         } else if (id == R.id.nav_gallery) {
+            SearchGroupFragment searchGroupFragment = new SearchGroupFragment();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, searchGroupFragment)
+                    .commit();
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -138,50 +127,5 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void setListItems() {
-        final ArrayList<Task> tasks;
-        if (selectedGroupIndex == 0) {
-            tasks = data.user.getTasks();
-        } else {
-            tasks = data.user.getGroups().get(selectedGroupIndex - 1).getTasks();
-        }
-
-        adapter = new TaskAdapter(NavigationActivity.this,
-                android.R.layout.activity_list_item,
-                tasks);
-
-        // присваиваем адаптер списку
-        lvMain.setAdapter(adapter);
-
-        lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task object;
-
-                if (selectedGroupIndex == 0) {
-                    object = data.user.getTasks().get(position);
-                } else {
-                    object = data.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
-                }
-
-                if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
-
-                final ArrayList<Task> tasks1;
-
-                if (selectedGroupIndex == 0) {
-                    tasks1 = data.user.getTasks();
-                } else {
-                    tasks1 = data.user.getGroups().get(selectedGroupIndex - 1).getTasks();
-                }
-
-                adapter = new TaskAdapter(NavigationActivity.this,
-                        android.R.layout.activity_list_item,
-                        tasks1);
-
-                lvMain.setAdapter(adapter);
-            }
-        });
     }
 }
