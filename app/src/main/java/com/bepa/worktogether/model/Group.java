@@ -58,4 +58,9 @@ public class Group {
     public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return id.equals(((Group) obj).id);
+    }
 }

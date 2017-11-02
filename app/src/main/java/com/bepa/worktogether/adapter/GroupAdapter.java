@@ -1,14 +1,18 @@
 package com.bepa.worktogether.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bepa.worktogether.R;
 import com.bepa.worktogether.model.Group;
+import com.bepa.worktogether.model.MockedData;
 
 import java.util.ArrayList;
 
@@ -24,47 +28,41 @@ public class GroupAdapter extends ArrayAdapter<Group> {
         this.objects = objects;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
-
-        // assign the view we are converting to a local variable
+    public View getView(int position, View convertView, @NonNull ViewGroup parent){
         View v = convertView;
 
-        // first check to see if the view is null. if so, we have to inflate it.
-        // to inflate it basically means to render, or show, the view.
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.list_item_group_search, null);
         }
 
-    /*
-     * Recall that the variable position is sent in as an argument to this method.
-     * The variable simply refers to the position of the current object in the list. (The ArrayAdapter
-     * iterates through the list we sent it)
-     *
-     * Therefore, i refers to the current Item object.
-     */
         Group i = objects.get(position);
 
         if (i != null) {
 
-            // This is how you obtain a reference to the TextViews.
-            // These TextViews are created in the XML files we defined.
-
             TextView gn = (TextView) v.findViewById(R.id.groupName);
             TextView gt = (TextView) v.findViewById(R.id.numOfTasks);
+            Button btn = (Button) v.findViewById(R.id.btnJoinLeave);
 
-            // check to see if each individual textview is null.
-            // if not, assign some text!
             if (gn != null){
                 gn.setText(i.getName());
+
+                if (btn != null) {
+                    if (MockedData.user.hasGroup(i)) {
+                        btn.setText("Leave");
+                        btn.setBackgroundColor(parent.getResources().getColor(R.color.colorAccent));
+                    } else {
+                        btn.setText("Join");
+                        btn.setBackgroundColor(parent.getResources().getColor(R.color.colorPrimary));
+                    }
+                }
             }
             if (gt != null){
                 gt.setText(Integer.toString(i.getTasks().size()));
             }
         }
 
-        // the view must be returned to our activity
-        return v;
+         return v;
 
     }
 }

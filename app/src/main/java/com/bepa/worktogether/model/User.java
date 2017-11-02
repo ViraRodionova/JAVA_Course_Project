@@ -57,4 +57,14 @@ public class User {
     public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public boolean hasGroup(Group group) {
+        boolean res = false;
+
+        for(int i = 0; i < groups.size() && !res; i++) {
+            if(group.equals(groups.get(i))) res = true;
+        }
+
+        return res;
+    }
 }
