@@ -4,18 +4,21 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import com.bepa.worktogether.GroupPageActivity;
 import com.bepa.worktogether.R;
 import com.bepa.worktogether.adapter.GroupAdapter;
+import com.bepa.worktogether.model.Group;
 import com.bepa.worktogether.model.MockedData;
+
+import java.util.ArrayList;
 
 /**
  * Created by vera on 11/2/17.
@@ -24,7 +27,6 @@ import com.bepa.worktogether.model.MockedData;
 public class SearchGroupFragment extends Fragment {
     Toolbar toolbar;
     GroupAdapter groupAdapter;
-    SearchView searchView;
     ListView listView;
 
     @Override
@@ -38,13 +40,28 @@ public class SearchGroupFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        searchView = (SearchView) getActivity().findViewById(R.id.svGroups);
-
         listView = (ListView) getActivity().findViewById(R.id.lvGroupSearch);
+        setGroups(MockedData.groups);
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fabAddGroup);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MockedData.addGroup();
+                setGroups(MockedData.groups);
+            }
+        });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    private void setGroups(final ArrayList<Group> groups) {
         groupAdapter = new GroupAdapter(getActivity(),
                 android.R.layout.activity_list_item,
-                MockedData.groups);
+                groups);
 
         listView.setAdapter(groupAdapter);
 
@@ -53,33 +70,13 @@ public class SearchGroupFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), GroupPageActivity.class);
 
-                System.out.println(MockedData.groups.get(i).getName());
+                System.out.println(groups.get(i).getName());
 
-                intent.putExtra("GROUP_ID", MockedData.groups.get(i).getId());
+                intent.putExtra("GROUP_ID", groups.get(i).getId());
 
                 startActivity(intent);
             }
         });
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                System.out.println("================== SUBMIT ==================");
-                System.out.println(s);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                System.out.println("================== SEARCH ==================");
-                System.out.println(s);
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

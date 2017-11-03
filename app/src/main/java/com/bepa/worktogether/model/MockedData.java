@@ -67,4 +67,13 @@ public class MockedData {
 
         return null;
     }
+
+    public static void addGroup() {
+        int id = groups.size() + 1;
+
+        Group group = new Group("group" + id, "Group " + id);
+        user.addGroup(group);
+
+        groups.add(group);
+    }
 }

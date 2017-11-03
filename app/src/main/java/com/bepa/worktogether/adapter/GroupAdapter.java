@@ -39,12 +39,16 @@ public class GroupAdapter extends ArrayAdapter<Group> {
 
             TextView gn = (TextView) v.findViewById(R.id.groupName);
             TextView gt = (TextView) v.findViewById(R.id.numOfTasks);
+            TextView gp = (TextView) v.findViewById(R.id.numOfPeople);
 
             if (gn != null){
                 gn.setText(i.getName());
             }
             if (gt != null){
                 gt.setText(Integer.toString(i.getTasks().size()));
+            }
+            if (gp != null){
+                gp.setText(Integer.toString(i.getPeople().size()));
             }
         }
 
