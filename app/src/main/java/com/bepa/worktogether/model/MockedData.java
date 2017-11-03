@@ -1,6 +1,7 @@
 package com.bepa.worktogether.model;
 
 import android.support.annotation.Nullable;
+import android.test.suitebuilder.annotation.Smoke;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +73,15 @@ public class MockedData {
         int id = groups.size() + 1;
 
         Group group = new Group("group" + id, "Group " + id);
+        user.addGroup(group);
+
+        groups.add(group);
+    }
+
+    public static void addGroup(String name) {
+        int id = groups.size() + 1;
+
+        Group group = new Group("group" + id, name);
         user.addGroup(group);
 
         groups.add(group);

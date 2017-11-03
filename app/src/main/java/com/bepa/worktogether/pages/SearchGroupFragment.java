@@ -1,10 +1,13 @@
 package com.bepa.worktogether.pages;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +27,11 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class SearchGroupFragment extends Fragment {
+public class SearchGroupFragment extends Fragment implements CreateGroupFragment.CreateGroupListener {
     Toolbar toolbar;
     GroupAdapter groupAdapter;
     ListView listView;
+    private FragmentActivity myContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,10 +51,15 @@ public class SearchGroupFragment extends Fragment {
 
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                MockedData.addGroup();
-                setGroups(MockedData.groups);
+                showCreateGroupDialog();
             }
         });
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        myContext = (FragmentActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -78,5 +87,17 @@ public class SearchGroupFragment extends Fragment {
             }
         });
 
+    }
+
+    private void showCreateGroupDialog() {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        CreateGroupFragment createGroupFragment = CreateGroupFragment.newInstance(this);
+        createGroupFragment.show(fm, "dialog_create_group");
+    }
+
+    @Override
+    public void onFinishCreateDialog(String groupName) {
+        MockedData.addGroup(groupName);
+        setGroups(MockedData.groups);
     }
 }
