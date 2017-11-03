@@ -12,10 +12,12 @@ import java.util.Arrays;
 
 public class MockedData {
     public static User user;
+    public static ArrayList<User> users;
     public static ArrayList<Group> groups;
 
     static {
         user = new User("user", "bepa.rdnv@gmail.com");
+        User u2 = new User("u2", "email@example.com");
 
         Group g1 = new Group("group1", "Group 1");
         Group g2 = new Group("group2", "Group 2");
@@ -34,6 +36,8 @@ public class MockedData {
         g1.addTask(t3);
         g1.addTask(t4);
         g1.addTask(t5);
+
+        g1.addUser(u2);
 
         g2.addTask(t6);
         g2.addTask(t7);
@@ -57,6 +61,10 @@ public class MockedData {
         for(int i = 3; i < 21; i++) {
             groups.add(new Group("group" + i, "Group " + i));
         }
+
+        users = new ArrayList<>(Arrays.asList(new User[] {
+                user, u2
+        }));
     }
 
     @Nullable
@@ -64,6 +72,16 @@ public class MockedData {
         for (int i = 0; i < groups.size(); i++) {
             if (groups.get(i).getId().equals(id))
                 return groups.get(i);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static User getUserByEmail(String email) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equals(email))
+                return users.get(i);
         }
 
         return null;

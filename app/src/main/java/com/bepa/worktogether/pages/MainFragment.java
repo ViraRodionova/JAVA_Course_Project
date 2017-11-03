@@ -21,6 +21,7 @@ import com.bepa.worktogether.adapter.TaskAdapter;
 import com.bepa.worktogether.model.Group;
 import com.bepa.worktogether.model.MockedData;
 import com.bepa.worktogether.model.Task;
+import com.bepa.worktogether.model.User;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class MainFragment extends Fragment
     ListView lvMain;
     int selectedGroupIndex;
     Task selectedTask;
+    Group selectedGroup;
     Toolbar toolbar;
     Spinner spinner;
     FragmentActivity myContext;
@@ -129,29 +131,15 @@ public class MainFragment extends Fragment
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showSetTaskStatusDialog();
-
                 if (selectedGroupIndex == 0) {
+                    selectedGroup = null;
                     selectedTask = MockedData.user.getTasks().get(position);
                 } else {
-                    selectedTask = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
+                    selectedGroup = MockedData.user.getGroups().get(selectedGroupIndex - 1);
+                    selectedTask = selectedGroup.getTasks().get(position);
                 }
-//
-//                if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
-//
-//                final ArrayList<Task> tasks1;
-//
-//                if (selectedGroupIndex == 0) {
-//                    tasks1 = MockedData.user.getTasks();
-//                } else {
-//                    tasks1 = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
-//                }
-//
-//                adapter = new TaskAdapter(getActivity(),
-//                        android.R.layout.activity_list_item,
-//                        tasks1);
-//
-//                lvMain.setAdapter(adapter);
+
+                showSetTaskStatusDialog();
             }
         });
     }
@@ -173,7 +161,13 @@ public class MainFragment extends Fragment
     }
 
     private void showSetTaskStatusDialog() {
-        TaskDialogFragment taskDialogFragment = TaskDialogFragment.newInstance(this);
+        TaskDialogFragment taskDialogFragment;
+        if (selectedGroup != null) {
+            taskDialogFragment = TaskDialogFragment.newInstance(this, selectedGroup.getPeople());
+        } else {
+            taskDialogFragment = TaskDialogFragment.newInstance(this, null);
+        }
+
         taskDialogFragment.show(fragmentManager, "dialog_set_task_status");
     }
 
@@ -185,7 +179,16 @@ public class MainFragment extends Fragment
     }
 
     @Override
-    public void onSetAssignee() {
+    public void onSetAssignee(String email) {
+        User user = MockedData.getUserByEmail(email);
 
+        if (user != null) {
+            user.addTask(selectedTask);
+            selectedTask.setAssignee(user);
+        }
+
+
+        selectedTask = null;
+        setListItems();
     }
 }
