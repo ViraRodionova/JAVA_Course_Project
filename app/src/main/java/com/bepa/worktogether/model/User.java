@@ -51,6 +51,10 @@ public class User {
         this.groups.remove(group);
     }
 
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+    }
+
     public ArrayList<Group> getGroups() {
         return groups;
     }

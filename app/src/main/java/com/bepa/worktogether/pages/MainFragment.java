@@ -163,9 +163,9 @@ public class MainFragment extends Fragment
     private void showSetTaskStatusDialog() {
         TaskDialogFragment taskDialogFragment;
         if (selectedGroup != null) {
-            taskDialogFragment = TaskDialogFragment.newInstance(this, selectedGroup.getPeople());
+            taskDialogFragment = TaskDialogFragment.newInstance(this, selectedGroup.getPeople(), selectedTask);
         } else {
-            taskDialogFragment = TaskDialogFragment.newInstance(this, null);
+            taskDialogFragment = TaskDialogFragment.newInstance(this, null, selectedTask);
         }
 
         taskDialogFragment.show(fragmentManager, "dialog_set_task_status");
@@ -174,6 +174,7 @@ public class MainFragment extends Fragment
     @Override
     public void onTaskStatusChanged(int status) {
         selectedTask.setStatus(status);
+        
         selectedTask = null;
         setListItems();
     }
@@ -187,6 +188,25 @@ public class MainFragment extends Fragment
             selectedTask.setAssignee(user);
         }
 
+        selectedTask = null;
+        setListItems();
+    }
+
+    @Override
+    public void onRemoveAssignee() {
+        selectedTask.getAssignee().removeTask(selectedTask);
+        selectedTask.removeAssignee();
+
+        selectedTask = null;
+        setListItems();
+    }
+
+    @Override
+    public void onRemoveTask() {
+        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask);
+
+        selectedGroup.removeTask(selectedTask);
+        selectedTask.removeAssignee();
 
         selectedTask = null;
         setListItems();

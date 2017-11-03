@@ -53,6 +53,10 @@ public class Group {
         this.tasks.add(task);
     }
 
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }

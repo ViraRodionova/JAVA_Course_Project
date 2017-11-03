@@ -43,4 +43,10 @@ public class Task {
     public void removeAssignee() {
         this.assignee = null;
     }
+
+    public boolean hasAssignee() {
+        if (assignee == null) return false;
+
+        return true;
+    }
 }

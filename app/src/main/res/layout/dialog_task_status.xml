@@ -31,11 +31,16 @@
             android:text="Set status 'Done'" />
 
         <RadioButton
+            android:id="@+id/radioButtonRemove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Task"/>
+
+        <RadioButton
             android:id="@+id/radioButtonAssignee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Assignee"
-            android:visibility="gone"/>
+            android:text="Set Assignee"/>
     </RadioGroup>
 
     <RadioGroup
@@ -50,7 +55,6 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/taskCancel"
             android:layout_width="wrap_content"
@@ -64,5 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="OK" />
+
     </LinearLayout>
 </LinearLayout>

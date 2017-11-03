@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bepa.worktogether.R;
+import com.bepa.worktogether.model.Task;
 import com.bepa.worktogether.model.User;
 
 import java.util.ArrayList;
@@ -24,12 +25,15 @@ public class TaskDialogFragment extends DialogFragment {
     RadioGroup usersGroup;
     TaskDialogListener listener;
     ArrayList<User> users;
+    Task task;
     RadioButton[] buttonsUsers;
     String selectedUser;
 
     public interface TaskDialogListener {
         void onTaskStatusChanged(int status);
         void onSetAssignee(String selectedUser);
+        void onRemoveAssignee();
+        void onRemoveTask();
     }
 
     public void sendBackResult(int status) {
@@ -37,8 +41,18 @@ public class TaskDialogFragment extends DialogFragment {
         dismiss();
     }
 
-    public void sendBackResult() {
+    public void sendBackResult(String selectedUser) {
         if (listener != null) listener.onSetAssignee(selectedUser);
+        dismiss();
+    }
+
+    public void sendBackResult() {
+        if (listener != null) listener.onRemoveAssignee();
+        dismiss();
+    }
+
+    public void removeTask() {
+        if (listener != null) listener.onRemoveTask();
         dismiss();
     }
 
@@ -48,10 +62,11 @@ public class TaskDialogFragment extends DialogFragment {
         // Use `newInstance` instead as shown below
     }
 
-    public static TaskDialogFragment newInstance(TaskDialogListener listener, ArrayList<User> users) {
+    public static TaskDialogFragment newInstance(TaskDialogListener listener, ArrayList<User> users, Task task) {
         TaskDialogFragment frag = new TaskDialogFragment();
         frag.setListener(listener);
         frag.setUsers(users);
+        frag.setTask(task);
         Bundle args = new Bundle();
         frag.setArguments(args);
         return frag;
@@ -89,9 +104,11 @@ public class TaskDialogFragment extends DialogFragment {
         usersGroup = (RadioGroup) view.findViewById(R.id.radioGroupUsers);
         RadioButton radioButton;
 
-        if (users != null) {
+
+        if (task.hasAssignee()) {
             radioButton = (RadioButton) view.findViewById(R.id.radioButtonAssignee);
-            radioButton.setVisibility(View.VISIBLE);
+            radioButton.setText(String.format("Remove Assignee (%s)", task.getAssignee().getEmail()));
+        } else if (users != null) {
             usersGroup.setVisibility(View.VISIBLE);
 
             buttonsUsers = new RadioButton[users.size()];
@@ -127,7 +144,11 @@ public class TaskDialogFragment extends DialogFragment {
                 if (radioButtonID == R.id.radioButtonOpened) sendBackResult(0);
                 else if (radioButtonID == R.id.radioButtonInProgress) sendBackResult(1);
                 else if (radioButtonID == R.id.radioButtonDone) sendBackResult(2);
-                else if (radioButtonID == R.id.radioButtonAssignee) sendBackResult();
+                else if (radioButtonID == R.id.radioButtonRemove) removeTask();
+                else if (radioButtonID == R.id.radioButtonAssignee) {
+                    if (task.hasAssignee()) sendBackResult();
+                    else sendBackResult(selectedUser);
+                }
             }
         });
     }
@@ -138,5 +159,9 @@ public class TaskDialogFragment extends DialogFragment {
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }
