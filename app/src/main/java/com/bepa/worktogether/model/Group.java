@@ -61,6 +61,14 @@ public class Group {
         this.tasks = tasks;
     }
 
+    public boolean hasTask(Task task) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i) == task) return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((Group) obj).id);
