@@ -43,7 +43,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         // to inflate it basically means to render, or show, the view.
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.list_item, null);
+            v = inflater.inflate(R.layout.list_item_task, null);
         }
 
     /*
@@ -62,6 +62,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
             TextView tn = (TextView) v.findViewById(R.id.taskName);
             TextView ts = (TextView) v.findViewById(R.id.taskStatus);
+            TextView tu = (TextView) v.findViewById(R.id.taskUser);
 
             // check to see if each individual textview is null.
             // if not, assign some text!
@@ -70,6 +71,9 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             }
             if (ts != null){
                 ts.setText(STATUS[i.getStatus()]);
+            }
+            if (tu != null && i.getAssignee() != null) {
+                tu.setText(i.getAssignee().getEmail());
             }
         }
 
