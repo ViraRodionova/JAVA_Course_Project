@@ -9,12 +9,21 @@ import java.util.ArrayList;
 public class Group {
     private String id;
     private String name;
+    private User admin;
     private ArrayList<User> people;
     private ArrayList<Task> tasks;
 
     public Group(String id, String name) {
         this.id = id;
         this.name = name;
+        this.people = new ArrayList<User>();
+        this.tasks = new ArrayList<Task>();
+    }
+
+    public Group(String id, String name, User admin) {
+        this.id = id;
+        this.name = name;
+        this.admin = admin;
         this.people = new ArrayList<User>();
         this.tasks = new ArrayList<Task>();
     }
@@ -33,6 +42,14 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 
     public void addUser(User user) {
@@ -71,6 +88,10 @@ public class Group {
         }
 
         return false;
+    }
+
+    public boolean isAdmin(User user) {
+        return this.admin == user;
     }
 
     @Override

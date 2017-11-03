@@ -51,7 +51,13 @@ public class User {
         this.groups.remove(group);
     }
 
-    public void removeTask(Task task) {
+    public void removeTask(Task task, boolean cascade) {
+        if (cascade) {
+            for (Group group : groups) {
+                if (group.hasTask(task)) group.removeTask(task);
+            }
+        }
+
         this.tasks.remove(task);
     }
 

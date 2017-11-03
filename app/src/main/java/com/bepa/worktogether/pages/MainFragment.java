@@ -174,7 +174,7 @@ public class MainFragment extends Fragment
     @Override
     public void onTaskStatusChanged(int status) {
         selectedTask.setStatus(status);
-        
+
         selectedTask = null;
         setListItems();
     }
@@ -194,7 +194,7 @@ public class MainFragment extends Fragment
 
     @Override
     public void onRemoveAssignee() {
-        selectedTask.getAssignee().removeTask(selectedTask);
+        selectedTask.getAssignee().removeTask(selectedTask, false);
         selectedTask.removeAssignee();
 
         selectedTask = null;
@@ -203,9 +203,9 @@ public class MainFragment extends Fragment
 
     @Override
     public void onRemoveTask() {
-        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask);
+        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask, true);
+        else selectedGroup.removeTask(selectedTask);
 
-        selectedGroup.removeTask(selectedTask);
         selectedTask.removeAssignee();
 
         selectedTask = null;

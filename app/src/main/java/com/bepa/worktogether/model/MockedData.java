@@ -12,15 +12,15 @@ import java.util.Arrays;
 
 public class MockedData {
     public static User user;
-    public static ArrayList<User> users;
     public static ArrayList<Group> groups;
+    static ArrayList<User> users;
 
     static {
         user = new User("user", "bepa.rdnv@gmail.com");
         User u2 = new User("u2", "email@example.com");
 
         Group g1 = new Group("group1", "Group 1");
-        Group g2 = new Group("group2", "Group 2");
+        Group g2 = new Group("group2", "Group 2", user);
 
         Task t1 = new Task("1", "Task 1", 0);
         Task t2 = new Task("2", "Task 2", 0);
@@ -58,7 +58,7 @@ public class MockedData {
                 g1, g2
         }));
 
-        for(int i = 3; i < 21; i++) {
+        for(int i = 3; i < 11; i++) {
             groups.add(new Group("group" + i, "Group " + i));
         }
 
@@ -99,7 +99,7 @@ public class MockedData {
     public static void addGroup(String name) {
         int id = groups.size() + 1;
 
-        Group group = new Group("group" + id, name);
+        Group group = new Group("group" + id, name, user);
         user.addGroup(group);
 
         groups.add(group);
@@ -113,5 +113,13 @@ public class MockedData {
         Task task = new Task("id", taskDesc, 0);
 
         group.addTask(task);
+    }
+
+    public static void removeGroup(Group group) {
+        for (User user : group.getPeople()) {
+            user.removeGroup(group);
+        }
+
+        groups.remove(group);
     }
 }
