@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 
 import com.bepa.worktogether.R;
 
@@ -17,30 +16,29 @@ import com.bepa.worktogether.R;
  * Created by vera on 11/3/17.
  */
 
-public class CreateDialogFragment extends DialogFragment {
-    EditText groupName;
-    CreateDialogListener listener;
-    String title;
+public class TaskDialogFragment extends DialogFragment {
+    RadioGroup radioGroup;
+    TaskDialogListener listener;
 
-    public interface CreateDialogListener {
-        void onFinishCreateDialog(String inputText);
+    public interface TaskDialogListener {
+        void onTaskStatusChanged(int status);
+        void onSetAssignee();
     }
 
-    public void sendBackResult() {
-        if (listener != null) listener.onFinishCreateDialog(groupName.getText().toString());
+    public void sendBackResult(int status) {
+        if (listener != null) listener.onTaskStatusChanged(status);
         dismiss();
     }
 
-    public CreateDialogFragment() {
+    public TaskDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
-    public static CreateDialogFragment newInstance(CreateDialogListener listener, String title) {
-        CreateDialogFragment frag = new CreateDialogFragment();
+    public static TaskDialogFragment newInstance(TaskDialogListener listener) {
+        TaskDialogFragment frag = new TaskDialogFragment();
         frag.setListener(listener);
-        frag.setTitle(title);
         Bundle args = new Bundle();
         frag.setArguments(args);
         return frag;
@@ -49,42 +47,38 @@ public class CreateDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_create, container);
+        return inflater.inflate(R.layout.dialog_task_status, container);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView textView = (TextView) view.findViewById(R.id.create_group_title);
-        textView.setText(title);
-
-        groupName = (EditText) view.findViewById(R.id.create_group_name);
-
-        groupName.requestFocus();
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        Button button = (Button) view.findViewById(R.id.create_group_cancel);
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupTask);
+        
+        Button button = (Button) view.findViewById(R.id.taskCancel);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 getDialog().dismiss();
             }
         });
 
-        button = (Button) view.findViewById(R.id.create_group_ok);
+        button = (Button) view.findViewById(R.id.taskOk);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendBackResult();
+                int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                int status = 0;
+
+                if (radioButtonID == R.id.radioButtonOpened) status = 0;
+                else if (radioButtonID == R.id.radioButtonInProgress) status = 1;
+                else if (radioButtonID == R.id.radioButtonDone) status = 2;
+
+                sendBackResult(status);
             }
         });
     }
 
-    public void setListener(CreateDialogListener listener) {
+    public void setListener(TaskDialogListener listener) {
         this.listener = listener;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

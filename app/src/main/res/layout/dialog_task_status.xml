@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_group"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"  >
+
+    <RadioGroup
+        android:id="@+id/radioGroupTask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButtonOpened"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set status 'Opened'" />
+
+        <RadioButton
+            android:id="@+id/radioButtonInProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set status 'In Progress'" />
+
+        <RadioButton
+            android:id="@+id/radioButtonDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set status 'Done'" />
+
+        <!--<RadioButton-->
+            <!--android:id="@+id/radioButtonAssignee"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Set Assignee" />-->
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/taskCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CANCEL" />
+
+        <Button
+            android:id="@+id/taskOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="OK" />
+    </LinearLayout>
+</LinearLayout>

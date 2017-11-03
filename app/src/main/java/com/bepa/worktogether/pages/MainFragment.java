@@ -28,14 +28,18 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class MainFragment extends Fragment implements CreateDialogFragment.CreateDialogListener {
+public class MainFragment extends Fragment
+        implements CreateDialogFragment.CreateDialogListener, TaskDialogFragment.TaskDialogListener {
+
     TaskAdapter adapter;
     ArrayAdapter<String> groupAdapter;
     ListView lvMain;
     int selectedGroupIndex;
+    Task selectedTask;
     Toolbar toolbar;
     Spinner spinner;
     FragmentActivity myContext;
+    FragmentManager fragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +102,7 @@ public class MainFragment extends Fragment implements CreateDialogFragment.Creat
     @Override
     public void onAttach(Activity activity) {
         myContext = (FragmentActivity) activity;
+        fragmentManager = myContext.getSupportFragmentManager();
         super.onAttach(activity);
     }
 
@@ -124,37 +129,36 @@ public class MainFragment extends Fragment implements CreateDialogFragment.Creat
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task object;
+                showSetTaskStatusDialog();
 
                 if (selectedGroupIndex == 0) {
-                    object = MockedData.user.getTasks().get(position);
+                    selectedTask = MockedData.user.getTasks().get(position);
                 } else {
-                    object = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
+                    selectedTask = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks().get(position);
                 }
-
-                if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
-
-                final ArrayList<Task> tasks1;
-
-                if (selectedGroupIndex == 0) {
-                    tasks1 = MockedData.user.getTasks();
-                } else {
-                    tasks1 = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
-                }
-
-                adapter = new TaskAdapter(getActivity(),
-                        android.R.layout.activity_list_item,
-                        tasks1);
-
-                lvMain.setAdapter(adapter);
+//
+//                if (object.getStatus() < 2) object.setStatus(object.getStatus() + 1);
+//
+//                final ArrayList<Task> tasks1;
+//
+//                if (selectedGroupIndex == 0) {
+//                    tasks1 = MockedData.user.getTasks();
+//                } else {
+//                    tasks1 = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
+//                }
+//
+//                adapter = new TaskAdapter(getActivity(),
+//                        android.R.layout.activity_list_item,
+//                        tasks1);
+//
+//                lvMain.setAdapter(adapter);
             }
         });
     }
 
     private void showCreateTaskDialog() {
-        FragmentManager fm = myContext.getSupportFragmentManager();
         CreateDialogFragment createGroupFragment = CreateDialogFragment.newInstance(this, "Enter Task Description:");
-        createGroupFragment.show(fm, "dialog_create_task");
+        createGroupFragment.show(fragmentManager, "dialog_create_task");
     }
 
     @Override
@@ -166,5 +170,22 @@ public class MainFragment extends Fragment implements CreateDialogFragment.Creat
             MockedData.createTask(taskDesc, group);
         }
         setListItems();
+    }
+
+    private void showSetTaskStatusDialog() {
+        TaskDialogFragment taskDialogFragment = TaskDialogFragment.newInstance(this);
+        taskDialogFragment.show(fragmentManager, "dialog_set_task_status");
+    }
+
+    @Override
+    public void onTaskStatusChanged(int status) {
+        selectedTask.setStatus(status);
+        selectedTask = null;
+        setListItems();
+    }
+
+    @Override
+    public void onSetAssignee() {
+
     }
 }
