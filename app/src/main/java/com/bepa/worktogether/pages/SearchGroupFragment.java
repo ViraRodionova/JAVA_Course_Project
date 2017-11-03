@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,7 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class SearchGroupFragment extends Fragment implements CreateGroupFragment.CreateGroupListener {
-    Toolbar toolbar;
+public class SearchGroupFragment extends Fragment implements CreateGroupDialogFragment.CreateGroupListener {
     GroupAdapter groupAdapter;
     ListView listView;
     private FragmentActivity myContext;
@@ -91,7 +89,7 @@ public class SearchGroupFragment extends Fragment implements CreateGroupFragment
 
     private void showCreateGroupDialog() {
         FragmentManager fm = myContext.getSupportFragmentManager();
-        CreateGroupFragment createGroupFragment = CreateGroupFragment.newInstance(this);
+        CreateGroupDialogFragment createGroupFragment = CreateGroupDialogFragment.newInstance(this, "Enter Group Name:");
         createGroupFragment.show(fm, "dialog_create_group");
     }
 

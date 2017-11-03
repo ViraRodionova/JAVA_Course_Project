@@ -86,4 +86,14 @@ public class MockedData {
 
         groups.add(group);
     }
+
+    public static void createTask(String taskDesc) {
+        user.addTask(new Task("id", taskDesc, 0));
+    }
+
+    public static void createTask(String taskDesc, Group group) {
+        Task task = new Task("id", taskDesc, 0);
+
+        group.addTask(task);
+    }
 }

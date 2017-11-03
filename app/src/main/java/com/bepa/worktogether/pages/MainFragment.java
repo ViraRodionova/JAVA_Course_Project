@@ -1,8 +1,12 @@
 package com.bepa.worktogether.pages;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +16,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
-import com.bepa.worktogether.NavigationActivity;
 import com.bepa.worktogether.R;
 import com.bepa.worktogether.adapter.TaskAdapter;
+import com.bepa.worktogether.model.Group;
 import com.bepa.worktogether.model.MockedData;
 import com.bepa.worktogether.model.Task;
 
@@ -24,13 +28,14 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements CreateGroupDialogFragment.CreateGroupListener {
     TaskAdapter adapter;
     ArrayAdapter<String> groupAdapter;
     ListView lvMain;
     int selectedGroupIndex;
     Toolbar toolbar;
     Spinner spinner;
+    FragmentActivity myContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +46,6 @@ public class MainFragment extends Fragment {
 
         toolbar.addView(spinner);
 
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.content_main_page, container, false);
     }
 
@@ -81,6 +85,20 @@ public class MainFragment extends Fragment {
 
             }
         });
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fabAddTask);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showCreateTaskDialog();
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        myContext = (FragmentActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -101,7 +119,6 @@ public class MainFragment extends Fragment {
                 android.R.layout.activity_list_item,
                 tasks);
 
-        // присваиваем адаптер списку
         lvMain.setAdapter(adapter);
 
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,5 +149,22 @@ public class MainFragment extends Fragment {
                 lvMain.setAdapter(adapter);
             }
         });
+    }
+
+    private void showCreateTaskDialog() {
+        FragmentManager fm = myContext.getSupportFragmentManager();
+        CreateGroupDialogFragment createGroupFragment = CreateGroupDialogFragment.newInstance(this, "Enter Task Description:");
+        createGroupFragment.show(fm, "dialog_create_task");
+    }
+
+    @Override
+    public void onFinishCreateDialog(String taskDesc) {
+        if (selectedGroupIndex == 0) {
+            MockedData.createTask(taskDesc);
+        } else {
+            Group group = MockedData.user.getGroups().get(selectedGroupIndex - 1);
+            MockedData.createTask(taskDesc, group);
+        }
+        setListItems();
     }
 }

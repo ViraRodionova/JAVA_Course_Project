@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bepa.worktogether.R;
 
@@ -16,7 +17,7 @@ import com.bepa.worktogether.R;
  * Created by vera on 11/3/17.
  */
 
-public class CreateGroupFragment extends DialogFragment {
+public class CreateGroupDialogFragment extends DialogFragment {
     public interface CreateGroupListener {
         void onFinishCreateDialog(String inputText);
     }
@@ -28,16 +29,18 @@ public class CreateGroupFragment extends DialogFragment {
 
     EditText groupName;
     CreateGroupListener listener;
+    String title;
 
-    public CreateGroupFragment() {
+    public CreateGroupDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
-    public static CreateGroupFragment newInstance(CreateGroupListener listener) {
-        CreateGroupFragment frag = new CreateGroupFragment();
+    public static CreateGroupDialogFragment newInstance(CreateGroupListener listener, String title) {
+        CreateGroupDialogFragment frag = new CreateGroupDialogFragment();
         frag.setListener(listener);
+        frag.setTitle(title);
         Bundle args = new Bundle();
         frag.setArguments(args);
         return frag;
@@ -52,6 +55,9 @@ public class CreateGroupFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        TextView textView = (TextView) view.findViewById(R.id.create_group_title);
+        textView.setText(title);
 
         groupName = (EditText) view.findViewById(R.id.create_group_name);
 
@@ -76,5 +82,9 @@ public class CreateGroupFragment extends DialogFragment {
 
     public void setListener(CreateGroupListener listener) {
         this.listener = listener;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

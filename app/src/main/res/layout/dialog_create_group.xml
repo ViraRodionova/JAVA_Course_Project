@@ -7,7 +7,7 @@
     android:orientation="vertical"  >
 
     <TextView
-        android:text="Group Name"
+        android:id="@+id/create_group_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@+id/create_group_name"/>
