@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class SearchGroupFragment extends Fragment implements CreateGroupDialogFragment.CreateGroupListener {
+public class SearchGroupFragment extends Fragment implements CreateDialogFragment.CreateDialogListener {
     GroupAdapter groupAdapter;
     ListView listView;
     private FragmentActivity myContext;
@@ -89,8 +89,8 @@ public class SearchGroupFragment extends Fragment implements CreateGroupDialogFr
 
     private void showCreateGroupDialog() {
         FragmentManager fm = myContext.getSupportFragmentManager();
-        CreateGroupDialogFragment createGroupFragment = CreateGroupDialogFragment.newInstance(this, "Enter Group Name:");
-        createGroupFragment.show(fm, "dialog_create_group");
+        CreateDialogFragment createGroupFragment = CreateDialogFragment.newInstance(this, "Enter Group Name:");
+        createGroupFragment.show(fm, "dialog_create");
     }
 
     @Override

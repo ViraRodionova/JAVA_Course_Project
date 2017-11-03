@@ -17,8 +17,8 @@ import com.bepa.worktogether.R;
  * Created by vera on 11/3/17.
  */
 
-public class CreateGroupDialogFragment extends DialogFragment {
-    public interface CreateGroupListener {
+public class CreateDialogFragment extends DialogFragment {
+    public interface CreateDialogListener {
         void onFinishCreateDialog(String inputText);
     }
 
@@ -28,17 +28,17 @@ public class CreateGroupDialogFragment extends DialogFragment {
     }
 
     EditText groupName;
-    CreateGroupListener listener;
+    CreateDialogListener listener;
     String title;
 
-    public CreateGroupDialogFragment() {
+    public CreateDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
-    public static CreateGroupDialogFragment newInstance(CreateGroupListener listener, String title) {
-        CreateGroupDialogFragment frag = new CreateGroupDialogFragment();
+    public static CreateDialogFragment newInstance(CreateDialogListener listener, String title) {
+        CreateDialogFragment frag = new CreateDialogFragment();
         frag.setListener(listener);
         frag.setTitle(title);
         Bundle args = new Bundle();
@@ -49,7 +49,7 @@ public class CreateGroupDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_create_group, container);
+        return inflater.inflate(R.layout.dialog_create, container);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CreateGroupDialogFragment extends DialogFragment {
         });
     }
 
-    public void setListener(CreateGroupListener listener) {
+    public void setListener(CreateDialogListener listener) {
         this.listener = listener;
     }
 

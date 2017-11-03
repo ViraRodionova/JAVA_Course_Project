@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by vera on 11/2/17.
  */
 
-public class MainFragment extends Fragment implements CreateGroupDialogFragment.CreateGroupListener {
+public class MainFragment extends Fragment implements CreateDialogFragment.CreateDialogListener {
     TaskAdapter adapter;
     ArrayAdapter<String> groupAdapter;
     ListView lvMain;
@@ -153,7 +153,7 @@ public class MainFragment extends Fragment implements CreateGroupDialogFragment.
 
     private void showCreateTaskDialog() {
         FragmentManager fm = myContext.getSupportFragmentManager();
-        CreateGroupDialogFragment createGroupFragment = CreateGroupDialogFragment.newInstance(this, "Enter Task Description:");
+        CreateDialogFragment createGroupFragment = CreateDialogFragment.newInstance(this, "Enter Task Description:");
         createGroupFragment.show(fm, "dialog_create_task");
     }
 
