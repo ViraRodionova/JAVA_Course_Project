@@ -10,9 +10,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bepa.worktogether.pages.MainFragment;
 import com.bepa.worktogether.pages.SearchGroupFragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,14 +30,7 @@ public class NavigationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         fragmentManager = getFragmentManager();
-
-        MainFragment mainFragment = new MainFragment();
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, mainFragment)
-                .commit();
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -46,6 +43,36 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            // Start sign in/sign up activity
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .build(),
+                    SIGN_IN_REQUEST_CODE
+            );
+        } else {
+            // User is already signed in. Therefore, display
+            // a welcome Toast
+            Toast.makeText(this,
+                    "Welcome " + FirebaseAuth.getInstance()
+                            .getCurrentUser()
+                            .getDisplayName(),
+                    Toast.LENGTH_LONG)
+                    .show();
+
+            // Load chat room contents
+            displayMainContent();
+        }
+    }
+
+    public void displayMainContent() {
+        MainFragment mainFragment = new MainFragment();
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, mainFragment)
+                .commit();
     }
 
     @Override
