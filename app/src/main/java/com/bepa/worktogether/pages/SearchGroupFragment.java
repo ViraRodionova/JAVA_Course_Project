@@ -77,8 +77,6 @@ public class SearchGroupFragment extends Fragment implements CreateDialogFragmen
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), GroupPageActivity.class);
 
-                System.out.println(groups.get(i).getName());
-
                 intent.putExtra("GROUP_ID", groups.get(i).getId());
 
                 startActivity(intent);

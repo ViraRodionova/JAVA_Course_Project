@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "469781094937-272rc76mqbnkm43rearmtd3fu4ods3ej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bepa.worktogether",
+            "certificate_hash": "fe8c80f4a98cc5b0fbde564694cfb642f750a71e"
+          }
+        },
+        {
           "client_id": "469781094937-qfh6ebni7cmjtr73gfi2cavconttm3nr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
