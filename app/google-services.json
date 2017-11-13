@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "469781094937",
+    "firebase_url": "https://worktogether-c6f63.firebaseio.com",
+    "project_id": "worktogether-c6f63",
+    "storage_bucket": "worktogether-c6f63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469781094937:android:2cf41edb0f00f869",
+        "android_client_info": {
+          "package_name": "com.bepa.worktogether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469781094937-qfh6ebni7cmjtr73gfi2cavconttm3nr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bepa.worktogether",
+            "certificate_hash": "d5c3b451450632dcae7028233190e9b71f713ed0"
+          }
+        },
+        {
+          "client_id": "469781094937-r2aovcim5oh9dbbgo47nv1mejhhsckko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAOETXu0NiKREsTnY47kvnrx0hg9J_eWI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469781094937-r2aovcim5oh9dbbgo47nv1mejhhsckko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

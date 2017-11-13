@@ -63,7 +63,6 @@ public class NavigationActivity extends AppCompatActivity
         displayMainContent();
     }
 
-
     public void displayMainContent() {
         MainFragment mainFragment = new MainFragment();
         fragmentManager
