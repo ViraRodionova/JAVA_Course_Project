@@ -83,6 +83,9 @@ public class MockedData {
                                     group.get("adminId").toString());
                         }
 
+                        HashMap<String, String> hmUsers = (HashMap<String, String>) group.get("users");
+                        res.setUsers(hmUsers);
+
                         HashMap<String, Object> hmTasks = (HashMap<String, Object>) group.get("tasks");
 
                         if (hmTasks != null) {
@@ -98,22 +101,20 @@ public class MockedData {
                                     task.setName(taskH.get("description").toString());
                                     task.setStatus(Integer.parseInt(taskH.get("status").toString()));
                                     if (taskH.get("user") != null) {
-                                        task.setAssignee(taskH.get("user").toString());
+                                        String userId = taskH.get("user").toString();
+                                        task.setAssignee(userId, res.getUserEmailById(userId));
                                     }
                                     res.addTask(task);
                                 } else {
                                     task.setName(taskH.get("description").toString());
                                     task.setStatus(Integer.parseInt(taskH.get("status").toString()));
                                     if (taskH.get("user") != null) {
-                                        task.setAssignee(taskH.get("user").toString());
-                                    } else task.setAssignee(null);
+                                        String userId = taskH.get("user").toString();
+                                        task.setAssignee(userId, res.getUserEmailById(userId));
+                                    } else task.setAssignee(null, null);
                                 }
                             }
                         }
-
-                        HashMap<String, Object> hmUsers = (HashMap<String, Object>) group.get("users");
-                        Set<String> users = hmUsers.keySet();
-                        res.setUsers(users);
 
                         if (getGroupById(groupId) == null) groups.add(res);
                     }

@@ -185,7 +185,7 @@ public class MainFragment extends Fragment
 
         if (user != null) {
             user.addTask(selectedTask);
-            selectedTask.setAssignee(user.getEmail());
+            selectedTask.setAssignee(user.getId(), user.getEmail());
         }
 
         selectedTask = null;

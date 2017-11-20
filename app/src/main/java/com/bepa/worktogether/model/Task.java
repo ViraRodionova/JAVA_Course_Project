@@ -8,6 +8,7 @@ public class Task {
     String id;
     String name;
     String userId;
+    String userEmail;
     int status;
 
     public Task(String id) {
@@ -33,11 +34,12 @@ public class Task {
     }
 
     public String getAssignee() {
-        return userId;
+        return userEmail;
     }
 
-    public void setAssignee(String assignee) {
-        this.userId = assignee;
+    public void setAssignee(String userId, String userEmail) {
+        this.userId = userId;
+        this.userEmail = userEmail;
     }
 
     public int getStatus() {

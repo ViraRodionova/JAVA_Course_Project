@@ -1,7 +1,7 @@
 package com.bepa.worktogether.model;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Created by vera on 10/30/17.
@@ -12,7 +12,7 @@ public class Group {
     private String name;
     private String adminId;
     private ArrayList<User> people;
-    private Set<String> users;
+    private HashMap<String, String> users;
     private ArrayList<Task> tasks;
 
     public Group(String id, String name) {
@@ -84,11 +84,11 @@ public class Group {
         this.tasks = tasks;
     }
 
-    public Set<String> getUsers() {
+    public HashMap<String, String> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<String> users) {
+    public void setUsers(HashMap<String, String> users) {
         this.users = users;
     }
 
@@ -106,6 +106,10 @@ public class Group {
         }
 
         return null;
+    }
+
+    public String getUserEmailById(String userId) {
+        return this.users.get(userId);
     }
 
     public boolean isAdmin(String userId) {
