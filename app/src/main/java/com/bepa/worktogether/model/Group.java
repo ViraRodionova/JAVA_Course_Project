@@ -1,5 +1,8 @@
 package com.bepa.worktogether.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +10,7 @@ import java.util.HashMap;
  * Created by vera on 10/30/17.
  */
 
-public class Group {
+public class Group implements Task.TaskValueChangedListener {
     private String id;
     private String name;
     private String adminId;
@@ -15,11 +18,14 @@ public class Group {
     private HashMap<String, String> users;
     private ArrayList<Task> tasks;
 
+    private DatabaseReference mDatabase;
+
     public Group(String id, String name) {
         this.id = id;
         this.name = name;
         this.people = new ArrayList<User>();
         this.tasks = new ArrayList<Task>();
+        setDatabaseReference();
     }
 
     public Group(String id, String name, String adminId) {
@@ -28,6 +34,16 @@ public class Group {
         this.adminId = adminId;
         this.people = new ArrayList<User>();
         this.tasks = new ArrayList<Task>();
+        setDatabaseReference();
+    }
+
+    private void setDatabaseReference() {
+        mDatabase = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("groups")
+                .child(id)
+                .getRef();
     }
 
     public String getId() {
@@ -70,6 +86,7 @@ public class Group {
 
     public void addTask(Task task) {
         this.tasks.add(task);
+        task.setListener(this);
     }
 
     public void removeTask(Task task) {
@@ -119,5 +136,10 @@ public class Group {
     @Override
     public boolean equals(Object obj) {
         return id.equals(((Group) obj).id);
+    }
+
+    @Override
+    public void onStatusChanged(String taskId, int status) {
+        mDatabase.child("tasks").child(taskId).child("status").setValue(status);
     }
 }

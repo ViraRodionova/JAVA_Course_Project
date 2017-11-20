@@ -1,15 +1,24 @@
 package com.bepa.worktogether.model;
 
+import com.bepa.worktogether.pages.CreateDialogFragment;
+import com.google.firebase.database.DatabaseReference;
+
 /**
  * Created by vera on 10/29/17.
  */
 
 public class Task {
-    String id;
-    String name;
-    String userId;
-    String userEmail;
-    int status;
+    private String id;
+    private String name;
+    private String userId;
+    private String userEmail;
+    private int status;
+
+    TaskValueChangedListener listener;
+
+    public interface TaskValueChangedListener {
+        void onStatusChanged(String taskId, int status);
+    }
 
     public Task(String id) {
         this.id = id;
@@ -42,12 +51,17 @@ public class Task {
         this.userEmail = userEmail;
     }
 
+    public void setListener(TaskValueChangedListener listener) {
+        this.listener = listener;
+    }
+
     public int getStatus() {
         return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
+        if (listener != null) listener.onStatusChanged(id, status);
     }
 
     public void removeAssignee() {
@@ -55,8 +69,10 @@ public class Task {
     }
 
     public boolean hasAssignee() {
-        if (userId == null) return false;
+        return userId != null;
+    }
 
-        return true;
+    public boolean hasAssignee(String userId) {
+        return this.userId != null && this.userId.equals(userId);
     }
 }

@@ -117,7 +117,15 @@ public class MainFragment extends Fragment
     private void setListItems() {
         final ArrayList<Task> tasks;
         if (selectedGroupIndex == 0) {
-            tasks = MockedData.user.getTasks();
+            tasks = new ArrayList<Task>();
+
+            for (Group group : MockedData.groups) {
+                for(Task task : group.getTasks()) {
+                    if (task.hasAssignee(MockedData.user.getId())) {
+                        tasks.add(task);
+                    }
+                }
+            }
         } else {
             tasks = MockedData.user.getGroups().get(selectedGroupIndex - 1).getTasks();
         }
