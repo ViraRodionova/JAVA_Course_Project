@@ -26,6 +26,10 @@ public class User {
         this.tasks = tasks;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getEmail() {
         return email;
     }

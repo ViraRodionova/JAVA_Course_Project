@@ -107,7 +107,7 @@ public class TaskDialogFragment extends DialogFragment {
 
         if (task.hasAssignee()) {
             radioButton = (RadioButton) view.findViewById(R.id.radioButtonAssignee);
-            radioButton.setText(String.format("Remove Assignee (%s)", task.getAssignee().getEmail()));
+            radioButton.setText(String.format("Remove Assignee (%s)", task.getAssignee()));
         } else if (users != null) {
             usersGroup.setVisibility(View.VISIBLE);
 

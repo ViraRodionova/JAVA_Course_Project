@@ -73,7 +73,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 ts.setText(STATUS[i.getStatus()]);
             }
             if (tu != null && i.getAssignee() != null) {
-                tu.setText(i.getAssignee().getEmail());
+                tu.setText(i.getAssignee());
             }
         }
 

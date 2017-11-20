@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bepa.worktogether.model.MockedData;
 import com.bepa.worktogether.pages.MainFragment;
 import com.bepa.worktogether.pages.SearchGroupFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -173,6 +174,7 @@ public class NavigationActivity extends AppCompatActivity
     public void displayMainContent(FirebaseUser user) {
         System.out.println("=======================================USER=======================================");
         System.out.println(user);
+        MockedData.setUser(user);
         MainFragment mainFragment = new MainFragment();
         fragmentManager
                 .beginTransaction()
@@ -214,7 +216,7 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            MockedData.initDatabase();
         } else if (id == R.id.nav_share) {
             signIn();
         } else if (id == R.id.nav_log_out) {

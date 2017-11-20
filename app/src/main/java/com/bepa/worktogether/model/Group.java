@@ -1,6 +1,7 @@
 package com.bepa.worktogether.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by vera on 10/30/17.
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 public class Group {
     private String id;
     private String name;
-    private User admin;
+    private String adminId;
     private ArrayList<User> people;
+    private Set<String> users;
     private ArrayList<Task> tasks;
 
     public Group(String id, String name) {
@@ -20,10 +22,10 @@ public class Group {
         this.tasks = new ArrayList<Task>();
     }
 
-    public Group(String id, String name, User admin) {
+    public Group(String id, String name, String adminId) {
         this.id = id;
         this.name = name;
-        this.admin = admin;
+        this.adminId = adminId;
         this.people = new ArrayList<User>();
         this.tasks = new ArrayList<Task>();
     }
@@ -44,12 +46,12 @@ public class Group {
         this.name = name;
     }
 
-    public User getAdmin() {
-        return admin;
+    public String getAdminId() {
+        return adminId;
     }
 
-    public void setAdmin(User admin) {
-        this.admin = admin;
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public void addUser(User user) {
@@ -82,6 +84,14 @@ public class Group {
         this.tasks = tasks;
     }
 
+    public Set<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<String> users) {
+        this.users = users;
+    }
+
     public boolean hasTask(Task task) {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i) == task) return true;
@@ -90,8 +100,16 @@ public class Group {
         return false;
     }
 
-    public boolean isAdmin(User user) {
-        return this.admin == user;
+    public Task getTaskById(String taskId) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId().equals(taskId)) return tasks.get(i);
+        }
+
+        return null;
+    }
+
+    public boolean isAdmin(String userId) {
+        return this.adminId.equals(userId);
     }
 
     @Override

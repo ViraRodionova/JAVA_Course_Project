@@ -56,7 +56,7 @@ public class GroupPageActivity extends AppCompatActivity {
         final Button btn = (Button) findViewById(R.id.gpJoinLeave);
 
         if (btn != null) {
-            if (group.isAdmin(MockedData.user)) {
+            if (group.isAdmin(MockedData.user.getId())) {
                 btn.setText("Remove");
                 btn.setBackgroundColor(getResources().getColor(R.color.red));
             }
@@ -70,7 +70,7 @@ public class GroupPageActivity extends AppCompatActivity {
 
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (group.isAdmin(MockedData.user)) {
+                    if (group.isAdmin(MockedData.user.getId())) {
                         MockedData.removeGroup(group);
                         finish();
                     }

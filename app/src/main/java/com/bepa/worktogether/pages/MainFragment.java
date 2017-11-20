@@ -185,7 +185,7 @@ public class MainFragment extends Fragment
 
         if (user != null) {
             user.addTask(selectedTask);
-            selectedTask.setAssignee(user);
+            selectedTask.setAssignee(user.getEmail());
         }
 
         selectedTask = null;
@@ -194,7 +194,6 @@ public class MainFragment extends Fragment
 
     @Override
     public void onRemoveAssignee() {
-        selectedTask.getAssignee().removeTask(selectedTask, false);
         selectedTask.removeAssignee();
 
         selectedTask = null;
@@ -203,8 +202,8 @@ public class MainFragment extends Fragment
 
     @Override
     public void onRemoveTask() {
-        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask, true);
-        else selectedGroup.removeTask(selectedTask);
+//        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask, true);
+        selectedGroup.removeTask(selectedTask);
 
         selectedTask.removeAssignee();
 

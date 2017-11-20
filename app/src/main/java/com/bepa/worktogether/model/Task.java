@@ -5,15 +5,23 @@ package com.bepa.worktogether.model;
  */
 
 public class Task {
-    private String id;
+    String id;
     String name;
-    User assignee;
+    String userId;
     int status;
+
+    public Task(String id) {
+        this.id = id;
+    }
 
     public Task(String id, String name, int status) {
         this.id = id;
         this.name = name;
         this.status = status;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -24,12 +32,12 @@ public class Task {
         this.name = name;
     }
 
-    public User getAssignee() {
-        return assignee;
+    public String getAssignee() {
+        return userId;
     }
 
-    public void setAssignee(User assignee) {
-        this.assignee = assignee;
+    public void setAssignee(String assignee) {
+        this.userId = assignee;
     }
 
     public int getStatus() {
@@ -41,11 +49,11 @@ public class Task {
     }
 
     public void removeAssignee() {
-        this.assignee = null;
+        this.userId = null;
     }
 
     public boolean hasAssignee() {
-        if (assignee == null) return false;
+        if (userId == null) return false;
 
         return true;
     }

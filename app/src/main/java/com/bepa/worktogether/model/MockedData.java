@@ -1,10 +1,18 @@
 package com.bepa.worktogether.model;
 
 import android.support.annotation.Nullable;
-import android.test.suitebuilder.annotation.Smoke;
+
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by vera on 10/30/17.
@@ -14,57 +22,12 @@ public class MockedData {
     public static User user;
     public static ArrayList<Group> groups;
     static ArrayList<User> users;
+    static private DatabaseReference mDatabase;
 
     static {
-        user = new User("user", "bepa.rdnv@gmail.com");
-        User u2 = new User("u2", "email@example.com");
+        groups = new ArrayList<Group>();
 
-        Group g1 = new Group("group1", "Group 1");
-        Group g2 = new Group("group2", "Group 2", user);
-
-        Task t1 = new Task("1", "Task 1", 0);
-        Task t2 = new Task("2", "Task 2", 0);
-        Task t3 = new Task("3", "Task 3", 1);
-        Task t4 = new Task("4", "Task 4", 0);
-        Task t5 = new Task("5", "Task 5", 0);
-        Task t6 = new Task("6", "Task 6", 2);
-        Task t7 = new Task("7", "Task 7", 0);
-        Task t8 = new Task("8", "Task 8", 0);
-
-        g1.addTask(t1);
-        g1.addTask(t2);
-        g1.addTask(t3);
-        g1.addTask(t4);
-        g1.addTask(t5);
-
-        g1.addUser(u2);
-
-        g2.addTask(t6);
-        g2.addTask(t7);
-        g2.addTask(t8);
-
-        user.addGroup(g1);
-        user.addGroup(g2);
-
-        user.tasks = new ArrayList<Task>(Arrays.asList(new Task[] {
-                t1, t5, t8
-        }));
-
-        t1.setAssignee(user);
-        t5.setAssignee(user);
-        t8.setAssignee(user);
-
-        groups = new ArrayList<>(Arrays.asList(new Group[] {
-                g1, g2
-        }));
-
-        for(int i = 3; i < 11; i++) {
-            groups.add(new Group("group" + i, "Group " + i));
-        }
-
-        users = new ArrayList<>(Arrays.asList(new User[] {
-                user, u2
-        }));
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Nullable
@@ -87,22 +50,80 @@ public class MockedData {
         return null;
     }
 
-    public static void addGroup() {
+    public static void addGroup(String name) {
         int id = groups.size() + 1;
 
-        Group group = new Group("group" + id, "Group " + id);
+        Group group = new Group("group" + id, name);
         user.addGroup(group);
 
         groups.add(group);
     }
 
-    public static void addGroup(String name) {
-        int id = groups.size() + 1;
+    private static void addGroup(HashMap<String, Object> group, String id) {
+        HashMap<String, Object> hmUsers = (HashMap<String, Object>) group.get("users");
 
-        Group group = new Group("group" + id, name, user);
-        user.addGroup(group);
+        if (hmUsers != null && hmUsers.keySet().contains(user.getId())) {
+            setGroupListener(id);
+        }
+    }
 
-        groups.add(group);
+    private static void setGroupListener(final String groupId) {
+        mDatabase.child("groups").child(groupId).getRef().addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> group = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                        Group res = getGroupById(groupId);
+
+                        if (res == null) {
+                            res = new Group(
+                                    groupId,
+                                    group.get("name").toString(),
+                                    group.get("adminId").toString());
+                        }
+
+                        HashMap<String, Object> hmTasks = (HashMap<String, Object>) group.get("tasks");
+
+                        if (hmTasks != null) {
+                            Set<String> tasks = hmTasks.keySet();
+
+                            for(String taskId : tasks) {
+                                HashMap<String, Object> taskH = (HashMap<String, Object>) hmTasks.get(taskId);
+
+                                Task task = res.getTaskById(taskId);
+
+                                if (task == null) {
+                                    task = new Task(taskId);
+                                    task.setName(taskH.get("description").toString());
+                                    task.setStatus(Integer.parseInt(taskH.get("status").toString()));
+                                    if (taskH.get("user") != null) {
+                                        task.setAssignee(taskH.get("user").toString());
+                                    }
+                                    res.addTask(task);
+                                } else {
+                                    task.setName(taskH.get("description").toString());
+                                    task.setStatus(Integer.parseInt(taskH.get("status").toString()));
+                                    if (taskH.get("user") != null) {
+                                        task.setAssignee(taskH.get("user").toString());
+                                    } else task.setAssignee(null);
+                                }
+                            }
+                        }
+
+                        HashMap<String, Object> hmUsers = (HashMap<String, Object>) group.get("users");
+                        Set<String> users = hmUsers.keySet();
+                        res.setUsers(users);
+
+                        if (getGroupById(groupId) == null) groups.add(res);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
     }
 
     public static void createTask(String taskDesc) {
@@ -121,5 +142,35 @@ public class MockedData {
         }
 
         groups.remove(group);
+    }
+
+    public static void setUser(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+            user = new User(firebaseUser.getUid(), firebaseUser.getEmail());
+        } else user  = null;
+    }
+
+    public static void initDatabase() {
+        mDatabase.child("groups").getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                Set<String> hkGroups = td.keySet();
+
+                for(String group : hkGroups) {
+                   addGroup((HashMap<String, Object>) td.get(group), group);
+                }
+
+                user.setGroups(groups);
+
+                mDatabase.child("groups").getRef().removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                System.out.println(firebaseError.getMessage());
+            }
+        });
     }
 }
