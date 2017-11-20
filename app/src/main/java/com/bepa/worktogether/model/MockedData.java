@@ -94,24 +94,26 @@ public class MockedData {
                             for(String taskId : tasks) {
                                 HashMap<String, Object> taskH = (HashMap<String, Object>) hmTasks.get(taskId);
 
-                                Task task = res.getTaskById(taskId);
+                                if (taskH.get("description") != null && taskH.get("status") != null) {
+                                    Task task = res.getTaskById(taskId);
 
-                                if (task == null) {
-                                    task = new Task(taskId);
-                                    task.setName(taskH.get("description").toString());
-                                    task.setStatus(Integer.parseInt(taskH.get("status").toString()));
-                                    if (taskH.get("user") != null) {
-                                        String userId = taskH.get("user").toString();
-                                        task.setAssignee(userId, res.getUserEmailById(userId));
+                                    if (task == null) {
+                                        task = new Task(taskId);
+                                        task.setName(taskH.get("description").toString());
+                                        task.setStatus(Integer.parseInt(taskH.get("status").toString()));
+                                        if (taskH.get("user") != null) {
+                                            String userId = taskH.get("user").toString();
+                                            task.setAssignee(userId, res.getUserEmailById(userId));
+                                        }
+                                        res.addTask(task);
+                                    } else {
+                                        task.setName(taskH.get("description").toString());
+                                        task.setStatus(Integer.parseInt(taskH.get("status").toString()));
+                                        if (taskH.get("user") != null) {
+                                            String userId = taskH.get("user").toString();
+                                            task.setAssignee(userId, res.getUserEmailById(userId));
+                                        } else task.setAssignee(null, null);
                                     }
-                                    res.addTask(task);
-                                } else {
-                                    task.setName(taskH.get("description").toString());
-                                    task.setStatus(Integer.parseInt(taskH.get("status").toString()));
-                                    if (taskH.get("user") != null) {
-                                        String userId = taskH.get("user").toString();
-                                        task.setAssignee(userId, res.getUserEmailById(userId));
-                                    } else task.setAssignee(null, null);
                                 }
                             }
                         }

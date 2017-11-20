@@ -89,8 +89,20 @@ public class Group implements Task.TaskValueChangedListener {
         task.setListener(this);
     }
 
+    public void createTask(String taskDesc) {
+        String taskId = mDatabase.child("tasks").push().getKey();
+        DatabaseReference taskRef = mDatabase.child("tasks").child(taskId).getRef();
+
+        Task task = new Task(taskId, taskDesc, 0);
+        task.setListener(this);
+
+        taskRef.child("description").setValue(taskDesc);
+        taskRef.child("status").setValue(0);
+    }
+
     public void removeTask(Task task) {
         this.tasks.remove(task);
+        mDatabase.child("tasks").child(task.getId()).setValue(null);
     }
 
     public ArrayList<Task> getTasks() {

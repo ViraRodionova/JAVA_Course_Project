@@ -163,7 +163,7 @@ public class MainFragment extends Fragment
             MockedData.createTask(taskDesc);
         } else {
             Group group = MockedData.user.getGroups().get(selectedGroupIndex - 1);
-            MockedData.createTask(taskDesc, group);
+            group.createTask(taskDesc);
         }
         setListItems();
     }
@@ -211,8 +211,6 @@ public class MainFragment extends Fragment
     public void onRemoveTask() {
 //        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask, true);
         selectedGroup.removeTask(selectedTask);
-
-        selectedTask.removeAssignee();
 
         selectedTask = null;
         setListItems();

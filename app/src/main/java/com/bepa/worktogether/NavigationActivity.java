@@ -88,7 +88,10 @@ public class NavigationActivity extends AppCompatActivity
 
         if (currentUser == null) {
             signIn();
-        } else displayMainContent(currentUser);
+        } else {
+            MockedData.setUser(currentUser);
+            displayMainContent(currentUser);
+        }
     }
     // [END on_start_check_user]
 
@@ -152,6 +155,7 @@ public class NavigationActivity extends AppCompatActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            MockedData.setUser(user);
                             displayMainContent(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -174,7 +178,6 @@ public class NavigationActivity extends AppCompatActivity
     public void displayMainContent(FirebaseUser user) {
         System.out.println("=======================================USER=======================================");
         System.out.println(user);
-        MockedData.setUser(user);
         MainFragment mainFragment = new MainFragment();
         fragmentManager
                 .beginTransaction()
