@@ -171,6 +171,8 @@ public class NavigationActivity extends AppCompatActivity
 
 
     public void displayMainContent(FirebaseUser user) {
+        System.out.println("=======================================USER=======================================");
+        System.out.println(user);
         MainFragment mainFragment = new MainFragment();
         fragmentManager
                 .beginTransaction()
@@ -214,9 +216,9 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            signIn();
+        } else if (id == R.id.nav_log_out) {
+            signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
