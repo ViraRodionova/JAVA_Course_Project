@@ -48,7 +48,7 @@ public class GroupAdapter extends ArrayAdapter<Group> {
                 gt.setText(Integer.toString(i.getTasks().size()));
             }
             if (gp != null){
-                gp.setText(Integer.toString(i.getPeople().size()));
+                gp.setText(Integer.toString(i.getUsers().size()));
             }
         }
 

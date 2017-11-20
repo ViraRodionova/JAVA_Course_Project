@@ -77,12 +77,7 @@ public class NavigationActivity extends AppCompatActivity
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
-    }
 
-    // [START on_start_check_user]
-    @Override
-    public void onStart() {
-        super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -93,7 +88,6 @@ public class NavigationActivity extends AppCompatActivity
             displayMainContent(currentUser);
         }
     }
-    // [END on_start_check_user]
 
     // [START signin]
     private void signIn() {
@@ -176,8 +170,6 @@ public class NavigationActivity extends AppCompatActivity
 
 
     public void displayMainContent(FirebaseUser user) {
-        System.out.println("=======================================USER=======================================");
-        System.out.println(user);
         MainFragment mainFragment = new MainFragment();
         fragmentManager
                 .beginTransaction()

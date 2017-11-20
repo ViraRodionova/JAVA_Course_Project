@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -17,6 +18,7 @@ public class Group implements Task.TaskValueChangedListener {
     private ArrayList<User> people;
     private HashMap<String, String> users;
     private ArrayList<Task> tasks;
+    private ArrayList<String> emails;
 
     private DatabaseReference mDatabase;
 
@@ -74,7 +76,16 @@ public class Group implements Task.TaskValueChangedListener {
         this.people.add(user);
     }
 
-    public void removeUser(User user) { this.people.remove(user); }
+    public void removeUser(String userId) {
+        for (Task task : tasks) {
+            if (task.hasAssignee(userId)) {
+                task.setAssignee(null, null);
+            }
+        }
+        this.users.remove(userId);
+
+        mDatabase.child("users").child(userId).setValue(null);
+    }
 
     public ArrayList<User> getPeople() {
         return people;
@@ -113,12 +124,13 @@ public class Group implements Task.TaskValueChangedListener {
         this.tasks = tasks;
     }
 
-    public HashMap<String, String> getUsers() {
-        return users;
+    public ArrayList<String> getUsers() {
+        return emails;
     }
 
     public void setUsers(HashMap<String, String> users) {
         this.users = users;
+        this.emails = new ArrayList<String>(users.values());
     }
 
     public boolean hasTask(Task task) {

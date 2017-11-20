@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupPageActivity extends AppCompatActivity {
-    UserAdapter userAdapter;
+    ArrayAdapter<String> userAdapter;
     ListView lvUsers;
 
     @Override
@@ -104,9 +104,9 @@ public class GroupPageActivity extends AppCompatActivity {
     }
 
     private void setUsers(Group group) {
-        userAdapter = new UserAdapter(GroupPageActivity.this,
-                android.R.layout.activity_list_item,
-                group.getPeople());
+        userAdapter = new ArrayAdapter<String>(GroupPageActivity.this,
+                android.R.layout.simple_list_item_1,
+                group.getUsers());
         lvUsers.setAdapter(userAdapter);
     }
 }

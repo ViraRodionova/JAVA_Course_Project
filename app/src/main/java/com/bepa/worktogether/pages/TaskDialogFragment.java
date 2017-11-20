@@ -25,7 +25,7 @@ public class TaskDialogFragment extends DialogFragment {
     RadioGroup radioGroup;
     RadioGroup usersGroup;
     TaskDialogListener listener;
-    HashMap<String, String> users;
+    ArrayList<String> users;
     Task task;
     RadioButton[] buttonsUsers;
     String selectedUser;
@@ -64,7 +64,7 @@ public class TaskDialogFragment extends DialogFragment {
     }
 
     public static TaskDialogFragment newInstance(
-            TaskDialogListener listener, HashMap<String, String> users, Task task) {
+            TaskDialogListener listener, ArrayList<String> users, Task task) {
 
         TaskDialogFragment frag = new TaskDialogFragment();
         frag.setListener(listener);
@@ -117,7 +117,7 @@ public class TaskDialogFragment extends DialogFragment {
             buttonsUsers = new RadioButton[users.size()];
 
             int i = 0;
-            for (String user : users.values()) {
+            for (String user : users) {
                 radioButton = new RadioButton(getContext());
                 radioButton.setText(user);
                 radioButton.setEnabled(false);
@@ -162,7 +162,7 @@ public class TaskDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 
-    public void setUsers(HashMap<String, String> users) {
+    public void setUsers(ArrayList<String> users) {
         this.users = users;
     }
 

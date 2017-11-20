@@ -44,14 +44,7 @@ public class User {
     }
 
     public void removeGroup(Group group) {
-        for (Task task : this.tasks) {
-            if (group.hasTask(task)) {
-                task.removeAssignee();
-                this.tasks.remove(task);
-            }
-        }
-
-        group.removeUser(this);
+        group.removeUser(this.id);
         this.groups.remove(group);
     }
 
