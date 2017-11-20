@@ -129,6 +129,16 @@ public class Group implements Task.TaskValueChangedListener {
         return this.users.get(userId);
     }
 
+    public String getUserIdByEmail(String userEmail) {
+        // TODO: rewrite
+
+        for (String key : users.keySet()) {
+            if (users.get(key).equals(userEmail)) return key;
+        }
+
+        return null;
+    }
+
     public boolean isAdmin(String userId) {
         return this.adminId.equals(userId);
     }
@@ -141,5 +151,10 @@ public class Group implements Task.TaskValueChangedListener {
     @Override
     public void onStatusChanged(String taskId, int status) {
         mDatabase.child("tasks").child(taskId).child("status").setValue(status);
+    }
+
+    @Override
+    public void onAssigneeChanged(String taskId, String userId) {
+        mDatabase.child("tasks").child(taskId).child("user").setValue(userId);
     }
 }

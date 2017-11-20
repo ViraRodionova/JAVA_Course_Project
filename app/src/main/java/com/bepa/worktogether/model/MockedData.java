@@ -148,6 +148,7 @@ public class MockedData {
     public static void setUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
             user = new User(firebaseUser.getUid(), firebaseUser.getEmail());
+            initDatabase();
         } else user  = null;
     }
 

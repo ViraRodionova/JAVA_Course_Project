@@ -171,7 +171,7 @@ public class MainFragment extends Fragment
     private void showSetTaskStatusDialog() {
         TaskDialogFragment taskDialogFragment;
         if (selectedGroup != null) {
-            taskDialogFragment = TaskDialogFragment.newInstance(this, selectedGroup.getPeople(), selectedTask);
+            taskDialogFragment = TaskDialogFragment.newInstance(this, selectedGroup.getUsers(), selectedTask);
         } else {
             taskDialogFragment = TaskDialogFragment.newInstance(this, null, selectedTask);
         }
@@ -189,11 +189,10 @@ public class MainFragment extends Fragment
 
     @Override
     public void onSetAssignee(String email) {
-        User user = MockedData.getUserByEmail(email);
+        String userId = selectedGroup.getUserIdByEmail(email);
 
-        if (user != null) {
-            user.addTask(selectedTask);
-            selectedTask.setAssignee(user.getId(), user.getEmail());
+        if (userId != null) {
+            selectedTask.changeAssignee(userId, email);
         }
 
         selectedTask = null;

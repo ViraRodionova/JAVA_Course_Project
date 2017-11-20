@@ -18,6 +18,7 @@ public class Task {
 
     public interface TaskValueChangedListener {
         void onStatusChanged(String taskId, int status);
+        void onAssigneeChanged(String taskId, String userId);
     }
 
     public Task(String id) {
@@ -51,6 +52,13 @@ public class Task {
         this.userEmail = userEmail;
     }
 
+    public void changeAssignee(String userId, String userEmail) {
+        if(listener != null) listener.onAssigneeChanged(id, userId);
+
+        this.userId = userId;
+        this.userEmail = userEmail;
+    }
+
     public void setListener(TaskValueChangedListener listener) {
         this.listener = listener;
     }
@@ -61,11 +69,15 @@ public class Task {
 
     public void setStatus(int status) {
         this.status = status;
+
         if (listener != null) listener.onStatusChanged(id, status);
     }
 
     public void removeAssignee() {
         this.userId = null;
+        this.userEmail = null;
+
+        if (listener != null) listener.onAssigneeChanged(id, null);
     }
 
     public boolean hasAssignee() {

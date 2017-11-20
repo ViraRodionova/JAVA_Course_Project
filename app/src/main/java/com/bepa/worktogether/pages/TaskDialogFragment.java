@@ -15,6 +15,7 @@ import com.bepa.worktogether.model.Task;
 import com.bepa.worktogether.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by vera on 11/3/17.
@@ -24,7 +25,7 @@ public class TaskDialogFragment extends DialogFragment {
     RadioGroup radioGroup;
     RadioGroup usersGroup;
     TaskDialogListener listener;
-    ArrayList<User> users;
+    HashMap<String, String> users;
     Task task;
     RadioButton[] buttonsUsers;
     String selectedUser;
@@ -62,7 +63,9 @@ public class TaskDialogFragment extends DialogFragment {
         // Use `newInstance` instead as shown below
     }
 
-    public static TaskDialogFragment newInstance(TaskDialogListener listener, ArrayList<User> users, Task task) {
+    public static TaskDialogFragment newInstance(
+            TaskDialogListener listener, HashMap<String, String> users, Task task) {
+
         TaskDialogFragment frag = new TaskDialogFragment();
         frag.setListener(listener);
         frag.setUsers(users);
@@ -113,12 +116,14 @@ public class TaskDialogFragment extends DialogFragment {
 
             buttonsUsers = new RadioButton[users.size()];
 
-            for (int i = 0; i < users.size(); i++) {
+            int i = 0;
+            for (String user : users.values()) {
                 radioButton = new RadioButton(getContext());
-                radioButton.setText(users.get(i).getEmail());
+                radioButton.setText(user);
                 radioButton.setEnabled(false);
                 usersGroup.addView(radioButton);
                 buttonsUsers[i] = radioButton;
+                i++;
             }
 
             usersGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -157,7 +162,7 @@ public class TaskDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(HashMap<String, String> users) {
         this.users = users;
     }
 
