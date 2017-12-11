@@ -169,13 +169,11 @@ public class MainFragment extends Fragment
 
     @Override
     public void onFinishCreateDialog(String taskDesc) {
-        if (selectedGroupIndex == 0) {
-            MockedData.createTask(taskDesc);
-        } else {
+        if (selectedGroupIndex != 0) {
             Group group = MockedData.user.getGroups().get(selectedGroupIndex - 1);
             group.createTask(taskDesc);
+            setListItems();
         }
-        setListItems();
     }
 
     private void showSetTaskStatusDialog() {
@@ -219,7 +217,6 @@ public class MainFragment extends Fragment
 
     @Override
     public void onRemoveTask() {
-//        if (selectedTask.hasAssignee()) selectedTask.getAssignee().removeTask(selectedTask, true);
         selectedGroup.removeTask(selectedTask);
 
         selectedTask = null;

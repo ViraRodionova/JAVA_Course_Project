@@ -39,6 +39,19 @@ public class Group implements Task.TaskValueChangedListener {
         setDatabaseReference();
     }
 
+    public Group(String id, String name, String adminId, String adminEmail) {
+        this.id = id;
+        this.name = name;
+        this.adminId = adminId;
+        this.people = new ArrayList<User>();
+        this.tasks = new ArrayList<Task>();
+        this.users = new HashMap<String, String>();
+        this.emails = new ArrayList<String>();
+        this.emails.add(adminEmail);
+        this.users.put(adminId, adminEmail);
+        setDatabaseReference();
+    }
+
     private void setDatabaseReference() {
         mDatabase = FirebaseDatabase
                 .getInstance()

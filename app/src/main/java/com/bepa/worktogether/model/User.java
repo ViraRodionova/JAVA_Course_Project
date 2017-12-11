@@ -1,5 +1,8 @@
 package com.bepa.worktogether.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -11,12 +14,14 @@ public class User {
     String email;
     ArrayList<Group> groups;
     ArrayList<Task> tasks;
+    private DatabaseReference mDatabase;
 
     public User(String id, String email) {
         this.id = id;
         this.email = email;
         this.groups = new ArrayList<Group>();
         this.tasks = new ArrayList<Task>();
+        setDatabaseReference();
     }
 
     public User(String id, String email, ArrayList<Group> groups, ArrayList<Task> tasks) {
@@ -24,6 +29,13 @@ public class User {
         this.email = email;
         this.groups = groups;
         this.tasks = tasks;
+        setDatabaseReference();
+    }
+
+    private void setDatabaseReference() {
+        mDatabase = FirebaseDatabase
+                .getInstance()
+                .getReference();
     }
 
     public String getId() {
@@ -94,5 +106,18 @@ public class User {
         }
 
         return null;
+    }
+
+    public void createGroup(String groupName) {
+        String groupId = mDatabase.child("groups").push().getKey();
+        DatabaseReference groupRef = mDatabase.child("groups").child(groupId).getRef();
+
+        Group group = new Group(groupId, groupName, this.id, this.email);
+
+        groupRef.child("name").setValue(groupName);
+        groupRef.child("adminId").setValue(this.id);
+        groupRef.child("users").child(this.id).setValue(this.email);
+
+        groups.add(group);
     }
 }

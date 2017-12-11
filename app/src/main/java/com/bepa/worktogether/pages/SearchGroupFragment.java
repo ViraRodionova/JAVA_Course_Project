@@ -93,7 +93,7 @@ public class SearchGroupFragment extends Fragment implements CreateDialogFragmen
 
     @Override
     public void onFinishCreateDialog(String groupName) {
-        MockedData.addGroup(groupName);
-        setGroups(MockedData.groups);
+        MockedData.user.createGroup(groupName);
+        setGroups(MockedData.user.getGroups());
     }
 }
