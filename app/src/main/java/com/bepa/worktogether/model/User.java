@@ -87,4 +87,12 @@ public class User {
 
         return res;
     }
+
+    public Group getGroupById(String groupId) {
+        for(int i = 0; i < groups.size(); i++) {
+            if(groups.get(i).getId().equals(groupId)) return groups.get(i);
+        }
+
+        return null;
+    }
 }

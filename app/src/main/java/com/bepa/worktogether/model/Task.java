@@ -12,6 +12,7 @@ public class Task {
     private String name;
     private String userId;
     private String userEmail;
+    private String groupId;
     private int status;
 
     TaskValueChangedListener listener;
@@ -86,5 +87,13 @@ public class Task {
 
     public boolean hasAssignee(String userId) {
         return this.userId != null && this.userId.equals(userId);
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

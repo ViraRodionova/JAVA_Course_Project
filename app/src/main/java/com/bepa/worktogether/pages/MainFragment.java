@@ -42,6 +42,7 @@ public class MainFragment extends Fragment
     Spinner spinner;
     FragmentActivity myContext;
     FragmentManager fragmentManager;
+    FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +60,7 @@ public class MainFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fabAddTask);
         lvMain = (ListView) getActivity().findViewById(R.id.lvMain);
 
         final ArrayList<String> names = new ArrayList<String>();
@@ -82,6 +84,14 @@ public class MainFragment extends Fragment
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedGroupIndex = i;
+                if (selectedGroupIndex == 0) {
+                    fab.setEnabled(false);
+                    fab.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    fab.setEnabled(true);
+                    fab.setVisibility(View.VISIBLE);
+                }
 
                 setListItems();
             }
@@ -140,8 +150,8 @@ public class MainFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (selectedGroupIndex == 0) {
-                    selectedGroup = null;
-                    selectedTask = MockedData.user.getTasks().get(position);
+                    selectedGroup = MockedData.user.getGroupById(tasks.get(position).getGroupId());
+                    selectedTask = selectedGroup.getTaskById(tasks.get(position).getId());
                 } else {
                     selectedGroup = MockedData.user.getGroups().get(selectedGroupIndex - 1);
                     selectedTask = selectedGroup.getTasks().get(position);
