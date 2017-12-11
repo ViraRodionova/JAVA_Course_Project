@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.List;
 public class GroupPageActivity extends AppCompatActivity {
     ArrayAdapter<String> userAdapter;
     ListView lvUsers;
+    EditText etEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class GroupPageActivity extends AppCompatActivity {
 
         if (group == null) finish();
 
+        etEmail = (EditText) findViewById(R.id.gpUserEmail);
         lvUsers = (ListView) findViewById(R.id.gpPeopleList);
         setUsers(group);
 
@@ -93,6 +96,17 @@ public class GroupPageActivity extends AppCompatActivity {
                 }
             });
         }
+
+        final Button addUserBtn = (Button) findViewById(R.id.gpAddUser);
+
+        addUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = etEmail.getText().toString();
+
+                group.addUser(email);
+            }
+        });
     }
 
     @Override

@@ -1,11 +1,15 @@
 package com.bepa.worktogether.model;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by vera on 10/30/17.
@@ -174,6 +178,41 @@ public class Group implements Task.TaskValueChangedListener {
         }
 
         return null;
+    }
+
+    public void addUser(String email) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, Object> obj = (HashMap<String, Object>) dataSnapshot.getValue();
+
+                        Set<String> keys = obj.keySet();
+
+                        for(String id : keys) {
+                            HashMap<String, Object> user = (HashMap<String, Object>)obj.get(id);
+
+                            for(String key : user.keySet()) {
+                                if (key.equals("email")) {
+                                    String email = user.get(key).toString();
+
+                                    mDatabase.child("users").child(id).setValue(email);
+
+                                    emails.add(email);
+                                    users.put(id, email);
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public boolean isAdmin(String userId) {
